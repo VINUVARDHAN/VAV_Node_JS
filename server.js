@@ -8,7 +8,7 @@ const path = require('path');
 const { Pool } = require('pg');
 
 const psql = new Pool({
-    connectionString:utils.psql.psqlConnectionData.postgresUrlNoSsl,
+    connectionString:utils.psql.psqlConnectionData.postgresUrl || utils.psql.psqlConnectionData.postgresPrismaUrl,
 });
 
 // Middleware to parse JSON bodies
