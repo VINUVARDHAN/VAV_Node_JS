@@ -8,7 +8,7 @@ queriesHandling = {
             const res = await psql.query(query, values);
             return { isSuccess: true, result: res.rows };
         } catch (err) {
-            return { isSuccess: false, error : err };
+            return { isSuccess: false, result : err };
         }
     }
 }
