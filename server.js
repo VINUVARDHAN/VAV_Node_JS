@@ -8,12 +8,7 @@ const path = require('path');
 const { Pool } = require('pg');
 
 const psql = new Pool({
-    user: utils.psql.psqlConnectionData.postgresUser,
-    host: utils.psql.psqlConnectionData.postgresHost,
-    database: utils.psql.psqlConnectionData.postgresDatabase,
-    password: utils.psql.psqlConnectionData.postgresPassword,
-    port: 5432,
-    ssl: false, // Disable SSL (to make the db accessable in production no use of this key in local)
+    connectionString:utils.psql.psqlConnectionData.postgresUrlNoSsl,
 });
 
 // Middleware to parse JSON bodies
