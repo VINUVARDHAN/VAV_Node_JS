@@ -8,7 +8,7 @@ queriesHandling = {
             const res = await psql.query(query, values);
             return { isSuccess: true, result: res.rows };
         } catch (err) {
-            return { isSuccess: false, result : err };
+            return { isSuccess: false, result: err };
         }
     }
 }
@@ -37,14 +37,29 @@ commonUtil.responseConstruction = {
     }
 }
 commonUtil.userUtils = {
-    isValidUser: async function (req,res, psql) {
+    isValidUser: async function (req, res, psql) {
+
+        const createTableQuery = `
+CREATE TABLE IF NOT EXISTS vavuserdetails (
+  userId SERIAL PRIMARY KEY,
+  emailId VARCHAR(255) NOT NULL,
+  firstName VARCHAR(255) NOT NULL,
+  lastName VARCHAR(255) NOT NULL,
+  password VARCHAR(255) NOT NULL
+)
+`;
+
+        psql.query(createTableQuery)
+            .then(() => console.log('Table is ready'))
+            .catch(err => console.error('Error creating table:', err));
         emailId = utils.trimString(req.body.emailId);
         password = utils.trimString(req.body.password);
         var query = 'SELECT * FROM vavuserdetails WHERE emailId = $1 AND password = $2';
+
         var values = [emailId, password];
         var result = await queriesHandling.getQueryResult(psql, query, values);
         if (result.isSuccess) {
-            if(!result.result.length>0){
+            if (!result.result.length > 0) {
                 commonUtil.responseConstruction.userLoginUnsuccess(res);
             }
             req.vavUserDetails = result.result[0];
