@@ -8,7 +8,7 @@ queriesHandling = {
             const res = await psql.query(query, values);
             return { isSuccess: true, result: res.rows };
         } catch (err) {
-            return { isSuccess: false, result: err };
+            return { isSuccess: false, error : err };
         }
     }
 }
@@ -26,7 +26,7 @@ commonUtil.responseConstruction = {
     userLoginUnsuccess: function (res) {
         res.status(404).json({
             success: false,
-            message: 'No user with is details'
+            message: 'No user with this user details'
         });
     },
     ISE: function (res) {
@@ -44,10 +44,14 @@ commonUtil.userUtils = {
         var values = [emailId, password];
         var result = await queriesHandling.getQueryResult(psql, query, values);
         if (result.isSuccess) {
+            if(!result.result.length>0){
+                commonUtil.responseConstruction.userLoginUnsuccess(res);
+            }
             req.vavUserDetails = result.result[0];
             commonUtil.responseConstruction.userLoginSuccess(res);
         } else {
-            commonUtil.responseConstruction.userLoginUnsuccess(res);
+            console.log(result.result);
+            commonUtil.responseConstruction.ISE(res);
         }
     }
 }
