@@ -13,6 +13,7 @@ const psql = new Pool({
     database: utils.psql.psqlConnectionData.postgresDatabase,
     password: utils.psql.psqlConnectionData.postgresPassword,
     port: 5432,
+    ssl: false, // Disable SSL (to make the db accessable in production no use of this key in local)
 });
 
 // Middleware to parse JSON bodies
