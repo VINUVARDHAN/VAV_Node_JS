@@ -40,7 +40,7 @@ commonUtil.userUtils = {
     isValidUser: async function (req,res, psql) {
         emailId = utils.trimString(req.body.emailId);
         password = utils.trimString(req.body.password);
-        var query = 'SELECT * FROM vavUserDetails WHERE emailId = $1 and password = $2';
+        var query = 'SELECT * FROM vavuserdetails WHERE emailId = $1 AND password = $2';
         var values = [emailId, password];
         var result = await queriesHandling.getQueryResult(psql, query, values);
         if (result.isSuccess) {
